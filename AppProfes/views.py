@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Curso, Profesor
-from .forms import CrearCursoForm, CrearProfesorForm
+from .models import Curso, Profesor, Estudiante
+from .forms import CrearCursoForm, CrearProfesorForm, CrearEstudiantesForm
+
 
 # Create your views here.
 def mostrar_curso(request):
@@ -17,12 +18,6 @@ def mostrar_index(request):
     return render(request, 'index.html')
 
 
-def mostrar_referencias(request):
-
-    return render(request, 'referencias.html')
-
-
-
 def crear_curso(request):
 
 
@@ -34,7 +29,7 @@ def crear_curso(request):
 
             formulario_limpio = formulario.cleaned_data
 
-            curso = Curso(nombre=formulario_limpio['nombre'], comision=formulario_limpio['comision'])
+            curso = Curso(nombre=formulario_limpio['nombre'], division=formulario_limpio['division'])
 
             curso.save()
 
@@ -78,3 +73,23 @@ def buscar_profesor(request):
     else:
         respuesta = 'No hay datos'
     return render(request, 'buscar_profesor.html', {'respuesta': respuesta})
+
+
+def crear_estudiantes(request):
+    if request.method == 'POST':
+
+        formulario = CrearEstudiantesForm(request.POST)
+
+        if formulario.is_valid():
+
+            formulario_limpio = formulario.cleaned_data
+
+            Estudiante = Estudiante(nombre=formulario_limpio['nombre'], apellido=formulario_limpio['apellido'], email=formulario_limpio['email'], curso=formulario_limpio['curso'], institucion=formulario_limpio['institucion'])
+
+            Estudiante.save()
+
+            return render(request, 'index.html')
+
+    else:
+        formulario = CrearEstudiantesForm()
+    return render(request, 'crear_estudiantes.html', {'formulario': CrearEstudiantesForm})

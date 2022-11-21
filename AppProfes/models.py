@@ -12,6 +12,8 @@ class Estudiante(models.Model):
     nombre = models.CharField(max_length=40)
     apellido = models.CharField(max_length=40)
     email = models.EmailField()
+    curso = models.CharField(max_length=40)
+    institucion = models.CharField(max_length=40)
 
 
 class Profesor(models.Model):
